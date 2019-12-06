@@ -4,11 +4,14 @@
 # include <iostream>
 # include <map>
 # include <string>
-# include "ChessMove.h"
+
+# include "ChessPosition.h"
 # include "ChessPiece.h"
 
 class ChessBoard {
-  std::map<std::string, ChessPiece *> board;
+  std::map<ChessPosition, ChessPiece *> board;
+  PieceColor currentPlayer;
+  void switchPlayer();
 
 public:
   void resetBoard();
