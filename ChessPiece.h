@@ -25,11 +25,11 @@ public:
   virtual std::string getPieceName();
 
   virtual bool isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
-                                 ChessPosition start,
+                                 const ChessPosition start,
                                  ChessPosition end);
 
   bool canMakeMove(std::map<ChessPosition, ChessPiece *> &board,
-                   ChessPosition start,
+                   const ChessPosition start,
                    ChessPosition end);
 
   void checkDiagonals(std::map<ChessPosition, ChessPiece *> &board,

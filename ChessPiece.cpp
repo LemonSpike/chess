@@ -27,6 +27,8 @@ void ChessPiece::checkDiagonals(std::map<ChessPosition, ChessPiece *> &board,
 
   ChessPosition move = start;
 
+  PieceColor oppositeColor = (color == white) ? black : white;
+
   for (int i = 0; i < 4; ++i) {
 
     move = start;
@@ -42,6 +44,9 @@ void ChessPiece::checkDiagonals(std::map<ChessPosition, ChessPiece *> &board,
       move.pos[0] += deltaX;
       move.pos[1] += deltaY;
     }
+
+    if (move.isPositionValid() and board[move] -> color == oppositeColor)
+      moves.push_back(move);
   }
 }
 
@@ -54,6 +59,8 @@ void ChessPiece::checkRank(std::map<ChessPosition, ChessPiece *> &board,
 
   ChessPosition move = start;
   int direction = 1;
+
+  PieceColor oppositeColor = (color == white) ? black : white;
 
   for (int i = 1; i < BOARD_DIMEN; i++) {
 
@@ -70,9 +77,13 @@ void ChessPiece::checkRank(std::map<ChessPosition, ChessPiece *> &board,
     if (!board[move]) {
       moves.push_back(move);
     } else if (direction == 1) {
+      if (board[move] -> color == oppositeColor)
+        moves.push_back(move);
       direction = -1;
       move = start;
     } else {
+      if (board[move] -> color == oppositeColor)
+        moves.push_back(move);
       break;
     }
   }
@@ -89,6 +100,8 @@ void ChessPiece::checkFile(std::map<ChessPosition, ChessPiece *> &board,
   ChessPosition move = start;
   int direction = 1;
 
+  PieceColor oppositeColor = (color == white) ? black : white;
+
   for (int i = 1; i < BOARD_DIMEN; i++) {
 
     if (move.pos[1] == MAX_RANK) {
@@ -104,9 +117,13 @@ void ChessPiece::checkFile(std::map<ChessPosition, ChessPiece *> &board,
     if (!board[move]) {
       moves.push_back(move);
     } else if (direction == 1) {
+      if (board[move] -> color == oppositeColor)
+        moves.push_back(move);
       direction = -1;
       move = start;
     } else {
+      if (board[move] -> color == oppositeColor)
+        moves.push_back(move);
       break;
     }
   }
