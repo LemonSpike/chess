@@ -1,5 +1,5 @@
 OBJ = ChessMain.o ChessBoard.o Queen.o Rook.o Bishop.o Knight.o \
-ChessPiece.o ChessPosition.o
+King.o Pawn.o ChessPiece.o ChessPosition.o
 EXE = chess
 CXX = g++
 CXXFLAGS = -Wall -Wextra -g -MMD

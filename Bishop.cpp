@@ -1,16 +1,13 @@
-# include "ChessPiece.h"
+# include "Bishop.h"
 
-class Bishop: public ChessPiece {
+std::string Bishop::getPieceName() const {
+  return "Bishop";
+}
 
-  virtual std::string getPieceName() const {
-    return "Bishop";
-  }
-
-  virtual bool isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
-                                 const ChessPosition start,
-                                 const ChessPosition end) {
-    std::vector<ChessPosition> moves;
-    checkDiagonals(board, start, moves);
-    return (std::find(moves.begin(), moves.end(), end) != moves.end());
-  }
-};
+bool Bishop::isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
+                               const ChessPosition start,
+                               const ChessPosition end) {
+  std::vector<ChessPosition> moves;
+  checkDiagonals(board, start, moves);
+  return (std::find(moves.begin(), moves.end(), end) != moves.end());
+}

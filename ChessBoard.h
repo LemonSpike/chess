@@ -7,6 +7,12 @@
 
 # include "ChessPosition.h"
 # include "ChessPiece.h"
+# include "Pawn.h"
+# include "Bishop.h"
+# include "Rook.h"
+# include "Knight.h"
+# include "King.h"
+# include "Queen.h"
 
 class ChessBoard {
   std::map<ChessPosition, ChessPiece *> board;
