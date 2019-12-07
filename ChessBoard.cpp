@@ -1,5 +1,12 @@
 # include "ChessBoard.h"
 
+void ChessBoard::switchPlayer() {
+  if (currentPlayer == white)
+    currentPlayer = black;
+  else
+    currentPlayer = white;
+}
+
 void ChessBoard::submitMove(std::string positionOne, std::string positionTwo) {
   // Check positions are valid.
   ChessPosition pos_one(positionOne);
@@ -28,20 +35,30 @@ void ChessBoard::submitMove(std::string positionOne, std::string positionTwo) {
     return;
   }
 
-  if (!board[pos_one] -> canMakeMove(board, pos_one, pos_two))
+  if (!(board[pos_one] -> canMakeMove(board, pos_one, pos_two)))
     return;
 
   // TODO: Check for discovered check.
-  // board[pos_one] -> makeMove(board, pos_two);
+
+  board[pos_one] -> makeMove(board, pos_one, pos_two);
+  switchPlayer();
+
+}
+
+void ChessBoard::removePieces() {
+  std::map<ChessPosition, ChessPiece *>::iterator iter = board.begin();
+  while (iter != board.end()) {
+    if (iter -> second)
+      delete iter -> second;
+    iter++;
+  }
+  board.clear();
 }
 
 void ChessBoard::resetBoard() {
 
-  std::map<ChessPosition, ChessPiece *>::iterator iter = board.begin();
-  while (iter != board.end()) {
-    delete iter -> second;
-  }
-  board.clear();
+  // Clear existing board.
+  removePieces();
 
   // Setup white pieces.
   board[ChessPosition("A1")] = new Rook(white);
@@ -53,8 +70,12 @@ void ChessBoard::resetBoard() {
   board[ChessPosition("D1")] = new Queen(white);
   board[ChessPosition("E1")] = new King(white);
 
+  // Setup white pawns.
   std::string coord;
-  for(coord = "A2"; coord[0] <= 'H'; ++coord[0])
+  coord.push_back(MIN_FILE);
+  coord.push_back(WHITE_PAWN_START_RANK);
+
+  for(; coord[0] <= MAX_FILE; ++coord[0])
     board[ChessPosition(coord)] = new Pawn(white);
 
   // Setup black pieces.
@@ -67,6 +88,43 @@ void ChessBoard::resetBoard() {
   board[ChessPosition("D8")] = new Queen(black);
   board[ChessPosition("E8")] = new King(black);
 
-  for(coord = "A7"; coord[0] <= 'H'; ++coord[0])
+  // Setup black pawns.
+  coord = "";
+  coord.push_back(MIN_FILE);
+  coord.push_back(BLACK_PAWN_START_RANK);
+
+  for(; coord[0] <= MAX_FILE; ++coord[0])
     board[ChessPosition(coord)] = new Pawn(black);
+
+  currentPlayer = white;
+}
+
+bool ChessBoard::isInCheck(PieceColor player) {
+  ChessPosition kingPosition = findKing(player);
+  std::map<ChessPosition, ChessPiece *>::iterator iter = board.begin();
+  while (iter != board.end()) {
+    ChessPiece *piece = iter -> second;
+    if (piece and (piece -> color != player) and
+        piece -> canMakeMove(board, iter -> first, kingPosition)) {
+      return true;
+    }
+    iter++;
+  }
+  return false;
+}
+
+bool ChessBoard::isInCheckMate(PieceColor player) {
+
+}
+
+ChessPosition ChessBoard::findKing(PieceColor player) {
+  std::map<ChessPosition, ChessPiece *>::iterator iter = board.begin();
+  while (iter != board.end()) {
+    if ((iter -> second -> getPieceName() == "King") and
+        (iter -> second -> color == player)) {
+      break;
+    }
+    iter++;
+  }
+  return iter -> first;
 }

@@ -4,34 +4,52 @@ std::string Pawn::getPieceName() const {
     return "Pawn";
   }
 
-bool Pawn::isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
-                             const ChessPosition start,
-                             const ChessPosition end) {
+void Pawn::getAllMoves(std::map<ChessPosition, ChessPiece *> &board,
+                       const ChessPosition start) {
 
-  int xMove = end.pos[0] - start.pos[0];
-  int yMove = end.pos[1] - start.pos[1];
+  std::vector<ChessPosition> moves;
 
-  yMove *= (color == white) ? 1 : -1;
+  // Check capture moves.
+  addCaptureMoves(board, start, moves);
+
+  // Check single step.
+  ChessPosition move = start;
+  move.pos[1] += (color == white) ? 1 : -1;
+
+  if (!board[move])
+    moves.push_back(move);
+
+  // Check double step.
+  move = start;
+  char startRank = (color == white) ?
+    WHITE_PAWN_START_RANK : BLACK_PAWN_START_RANK;
+
+  if (start.pos[1] == startRank) {
+    move.pos[1] += (color == white) ? 2 : -2;
+    if (!board[move])
+      moves.push_back(move);
+  }
+  allMoves = moves;
+}
+
+void Pawn::addCaptureMoves(std::map<ChessPosition, ChessPiece *> &board,
+                           const ChessPosition start,
+                           std::vector<ChessPosition> &moves) {
 
   PieceColor oppositeColor = (color == white) ? black : white;
 
-  switch (abs(xMove)) {
-  case 1:
-    if (yMove != 1)
-      return false;
-    return (board[end] and board[end] -> color == oppositeColor);
-  case 0: {
-    char startRank = (color == white) ? WHITE_PAWN_START_RANK :
-    BLACK_PAWN_START_RANK;
+  ChessPosition move = start;
 
-    if (yMove == 1)
-      return (!board[end]);
+  int step = (color == white) ? 1 : -1;
 
-    if (yMove == 2)
-      return (!board[end] and start.pos[1] == startRank);
+  (move.pos[1]) += step;
+  (move.pos[0])++;
+  if (board[move] and ((board[move] -> color) == oppositeColor)) {
+    moves.push_back(move);
   }
-    return false;
-  default:
-    return false;
+
+  (move.pos[0]) -= 2;
+  if (board[move] and ((board[move] -> color) == oppositeColor)) {
+    moves.push_back(move);
   }
 }

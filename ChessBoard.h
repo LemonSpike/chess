@@ -18,10 +18,18 @@ class ChessBoard {
   std::map<ChessPosition, ChessPiece *> board;
   PieceColor currentPlayer;
   void switchPlayer();
+  void removePieces();
 
 public:
+
+  ChessBoard(): currentPlayer(white) { resetBoard(); };
+  ~ChessBoard() { removePieces(); };
+
   void resetBoard();
   void submitMove(std::string positionOne, std::string positionTwo);
+  bool isInCheck(PieceColor player);
+  ChessPosition findKing(PieceColor player);
+  bool isInCheckMate(PieceColor player);
 };
 
 #endif

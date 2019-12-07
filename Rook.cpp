@@ -4,11 +4,10 @@ std::string Rook::getPieceName() const {
   return "Rook";
 }
 
-bool Rook::isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
-                             const ChessPosition start,
-                             const ChessPosition end) {
+void Rook::getAllMoves(std::map<ChessPosition, ChessPiece *> &board,
+                       const ChessPosition start) {
   std::vector<ChessPosition> moves;
   checkFile(board, start, moves);
   checkRank(board, start, moves);
-  return (std::find(moves.begin(), moves.end(), end) != moves.end());
+  allMoves = moves;
 }

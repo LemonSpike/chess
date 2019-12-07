@@ -18,6 +18,7 @@ public:
   virtual ~ChessPiece() { };
 
   PieceColor color;
+  std::vector<ChessPosition> allMoves;
 
   friend std::ostream& operator <<(std::ostream& o,
                                    ChessPiece& piece) {
@@ -32,9 +33,16 @@ public:
 
   virtual std::string getPieceName() const = 0;
 
-  virtual bool isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
-                                 const ChessPosition start,
-                                 const ChessPosition end) = 0;
+  bool isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
+                         const ChessPosition start,
+                         const ChessPosition end);
+
+  virtual void getAllMoves(std::map<ChessPosition, ChessPiece *> &board,
+                           const ChessPosition start) = 0;
+
+  void makeMove(std::map<ChessPosition, ChessPiece *> &board,
+                const ChessPosition start,
+                const ChessPosition end);
 
   bool canMakeMove(std::map<ChessPosition, ChessPiece *> &board,
                    const ChessPosition start,

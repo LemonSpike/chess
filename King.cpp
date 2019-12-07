@@ -4,21 +4,38 @@ std::string King::getPieceName() const {
   return "King";
 }
 
-bool King::isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
-                             const ChessPosition start,
-                             const ChessPosition end) {
+void King::getAllMoves(std::map<ChessPosition, ChessPiece *> &board,
+                       const ChessPosition start) {
 
-  int xMove = end.pos[0] - start.pos[0];
-  int yMove = end.pos[1] - start.pos[1];
+  std::vector<ChessPosition> moves;
 
   PieceColor oppositeColor = (color == white) ? black : white;
 
-  switch (abs(xMove)) {
-  case 1:
-    if (abs(yMove) > 1)
-      return false;
-    return (!board[end] or (board[end] -> color == oppositeColor));
-  default:
-    return false;
+  ChessPosition move = start;
+
+  for (int i = 0; i < 9; ++i) {
+
+    move = start;
+
+    int deltaX = (i % 3) - 1;
+    int deltaY;
+    if (i < 3)
+      deltaY = -1;
+    else if (i < 6)
+      deltaY = 0;
+    else
+      deltaY = 1;
+
+    if (deltaY == 0 and deltaX == 0)
+      continue;
+
+    move.pos[0] += deltaX;
+    move.pos[1] += deltaY;
+
+    if (move.isPositionValid() and !board[move])
+      moves.push_back(move);
+    else if (move.isPositionValid() and board[move] -> color == oppositeColor)
+      moves.push_back(move);
   }
+  allMoves = moves;
 }

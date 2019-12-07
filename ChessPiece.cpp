@@ -4,18 +4,45 @@ bool ChessPiece::canMakeMove(std::map<ChessPosition, ChessPiece *> &board,
                              const ChessPosition start,
                              const ChessPosition end) {
     // Check for friendly fire.
-  if ((board[end] -> color) == color) {
-    std::cout << this << " cannot move to " << end.pos << "!";
+  if (board[end] and (board[end] -> color) == color) {
+    std::cout << *this << " cannot move to " << end.pos << "!";
     std::cout << "(The piece is occupied by " << board[end] << ")" << std::endl;
     return false;
   }
     // Check if square can be reached.
   if (!isSquareReachable(board, start, end)) {
-    std::cout << this << " cannot move to " << end.pos << "!" << std::endl;
+    std::cout << *this << " cannot move to " << end.pos << "!" << std::endl;
     return false;
   }
 
   return true;
+}
+
+void ChessPiece::makeMove(std::map<ChessPosition, ChessPiece *> &board,
+                          const ChessPosition start,
+                          const ChessPosition end) {
+
+  ChessPiece *startPiece = board[start];
+  ChessPiece *endPiece = board[end];
+
+  board[end] = startPiece;
+  board[start] = nullptr;
+
+  std::cout << *this << " moves from " << start.pos << " to ";
+  std::cout << end.pos;
+  if (endPiece != nullptr) {
+    std::cout << " taking " << *endPiece;
+    delete endPiece;
+  }
+  std::cout << std::endl;
+}
+
+
+bool ChessPiece::isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
+                                   const ChessPosition start,
+                                   const ChessPosition end) {
+  getAllMoves(board, start);
+  return (std::find(allMoves.begin(), allMoves.end(), end) != allMoves.end());
 }
 
 void ChessPiece::checkDiagonals(std::map<ChessPosition, ChessPiece *> &board,
@@ -34,7 +61,7 @@ void ChessPiece::checkDiagonals(std::map<ChessPosition, ChessPiece *> &board,
     move = start;
 
     int deltaX = (i % 2) ? -1 : 1;
-    int deltaY = (i > 2) ? -1 : 1;
+    int deltaY = (i > 1) ? -1 : 1;
 
     move.pos[0] += deltaX;
     move.pos[1] += deltaY;

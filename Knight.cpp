@@ -4,25 +4,25 @@ std::string Knight::getPieceName() const {
   return "Knight";
 }
 
-bool Knight::isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
-                               const ChessPosition start,
-                               const ChessPosition end) {
-  if (!(((ChessPosition) end).isPositionValid()))
-    return false;
+void Knight::getAllMoves(std::map<ChessPosition, ChessPiece *> &board,
+                         const ChessPosition start) {
 
-  if (board[end] && board[end] -> color == color)
-    return false;
+  std::vector<ChessPosition> moves;
 
-  int horz = end.pos[0] - start.pos[0];
-  int vert = end.pos[1] - start.pos[1];
-  switch (horz) {
-  case -1:
-  case 1:
-    return (abs(vert) == 2*abs(horz));
-  case -2:
-  case 2:
-    return (2*abs(vert) == abs(horz));
-  default:
-    return false;
+  int dX[8] = { 1, 2, -1, -2, -2, -1, 1, 2 };
+  int dY[8] = { 2, 1, 2, 1, -1, -2, -2, -1 };
+  ChessPosition move = start;
+
+  for (int i = 0; i < 8; i++) {
+    move = start;
+    move.pos[0] += dX[i];
+    move.pos[1] += dY[i];
+
+    if (move.isPositionValid() and !board[move])
+      moves.push_back(move);
+    else if (move.isPositionValid() and (board[move] -> color != color))
+      moves.push_back(move);
   }
+
+  allMoves = moves;
 }
