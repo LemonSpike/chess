@@ -2,7 +2,7 @@
 
 class Bishop: public ChessPiece {
 
-  virtual std::string getPieceName() {
+  virtual std::string getPieceName() const {
     return "Bishop";
   }
 
