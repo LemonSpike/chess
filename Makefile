@@ -1,10 +1,11 @@
-OBJ = ChessMain.o ChessBoard.o Queen.o ChessPiece.o ChessPosition.o
+OBJ = ChessMain.o ChessBoard.o Queen.o Rook.o Bishop.o Knight.o \
+ChessPiece.o ChessPosition.o
 EXE = chess
 CXX = g++
 CXXFLAGS = -Wall -Wextra -g -MMD
 
 $(EXE): $(OBJ)
-	$(CXX) $^ -o $0
+	$(CXX) $^ -o $@
 
 %.o: %.cpp Makefile
 	$(CXX) $(CXXFLAGS) -c $<

@@ -7,8 +7,8 @@ class Queen: public ChessPiece {
   }
 
   virtual bool isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
-				 const ChessPosition start,
-				 ChessPosition end) {
+                                 const ChessPosition start,
+                                 const ChessPosition end) {
     std::vector<ChessPosition> moves;
     checkDiagonals(board, start, moves);
     checkFile(board, start, moves);

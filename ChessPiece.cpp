@@ -20,7 +20,7 @@ bool ChessPiece::canMakeMove(std::map<ChessPosition, ChessPiece *> &board,
 
 void ChessPiece::checkDiagonals(std::map<ChessPosition, ChessPiece *> &board,
                                 const ChessPosition start,
-				std::vector<ChessPosition> &moves) const {
+                                std::vector<ChessPosition> &moves) const {
 
   if (((ChessPosition) start).isPositionValid() == false)
     return;

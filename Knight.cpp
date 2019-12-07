@@ -7,16 +7,16 @@ class Knight: public ChessPiece {
   }
 
   virtual bool isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
-				 ChessPosition start,
-				 ChessPosition end) {
-    if (!end.isPositionValid())
+                                 const ChessPosition start,
+                                 const ChessPosition end) {
+    if (!(((ChessPosition) end).isPositionValid()))
       return false;
 
     if (board[end] && board[end] -> color == color)
       return false;
 
-    int horz = end[0] - start[0];
-    int vert = end[1] - start[1];
+    int horz = end.pos[0] - start.pos[0];
+    int vert = end.pos[1] - start.pos[1];
     switch (horz) {
     case -1:
     case 1:

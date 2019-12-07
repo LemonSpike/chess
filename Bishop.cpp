@@ -7,10 +7,10 @@ class Bishop: public ChessPiece {
   }
 
   virtual bool isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
-				 ChessPosition start,
-				 ChessPosition end) {
-    vector<ChessPosition> moves;
-    checkDiagonals(board, moves, start);
+                                 const ChessPosition start,
+                                 const ChessPosition end) {
+    std::vector<ChessPosition> moves;
+    checkDiagonals(board, start, moves);
     return (std::find(moves.begin(), moves.end(), end) != moves.end());
   }
 };

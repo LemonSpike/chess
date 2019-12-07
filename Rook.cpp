@@ -7,9 +7,9 @@ class Rook: public ChessPiece {
   }
 
   virtual bool isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
-				 ChessPosition start,
-				 ChessPosition end) {
-    vector<ChessPosition> moves;
+                                 const ChessPosition start,
+                                 const ChessPosition end) {
+    std::vector<ChessPosition> moves;
     checkFile(board, start, moves);
     checkRank(board, start, moves);
     return (std::find(moves.begin(), moves.end(), end) != moves.end());

@@ -11,6 +11,7 @@ class ChessPosition {
 
   ChessPosition(std::string pos): pos(pos) { };
 
+  bool operator ==(const ChessPosition& rhs) const { return pos == rhs.pos; }
   bool operator <(const ChessPosition& rhs) const { return pos < rhs.pos; }
   bool isPositionValid();
 };

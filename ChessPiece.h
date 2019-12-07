@@ -3,6 +3,7 @@
 
 # include <map>
 # include <vector>
+# include <algorithm>
 
 # include "Constants.h"
 # include "ChessPosition.h"
@@ -20,17 +21,22 @@ public:
                                    ChessPiece& piece) {
     o << ((piece.color == white) ? "White's " : "Black's ");
     o << piece.getPieceName();
+    return o;
   }
 
-  virtual std::string getPieceName();
+  bool operator ==(const ChessPiece& rhs) const {
+    return (color == rhs.color) and (getPieceName() == rhs.getPieceName());
+  }
+
+  virtual std::string getPieceName() const;
 
   virtual bool isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
                                  const ChessPosition start,
-                                 ChessPosition end);
+                                 const ChessPosition end);
 
   bool canMakeMove(std::map<ChessPosition, ChessPiece *> &board,
                    const ChessPosition start,
-                   ChessPosition end);
+                   const ChessPosition end);
 
   void checkDiagonals(std::map<ChessPosition, ChessPiece *> &board,
                       const ChessPosition start,
