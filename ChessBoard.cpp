@@ -37,7 +37,7 @@ void ChessBoard::submitMove(std::string positionOne, std::string positionTwo) {
 
 void ChessBoard::resetBoard() {
 
-  auto iter = board.begin();
+  std::map<ChessPosition, ChessPiece *>::iterator iter = board.begin();
   while (iter != board.end()) {
     delete iter -> second;
   }

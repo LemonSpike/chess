@@ -15,6 +15,8 @@ protected:
   ChessPiece(PieceColor color): color(color) { };
 
 public:
+  virtual ~ChessPiece() { };
+
   PieceColor color;
 
   friend std::ostream& operator <<(std::ostream& o,
@@ -28,11 +30,11 @@ public:
     return (color == rhs.color) and (getPieceName() == rhs.getPieceName());
   }
 
-  virtual std::string getPieceName() const;
+  virtual std::string getPieceName() const = 0;
 
   virtual bool isSquareReachable(std::map<ChessPosition, ChessPiece *> &board,
                                  const ChessPosition start,
-                                 const ChessPosition end);
+                                 const ChessPosition end) = 0;
 
   bool canMakeMove(std::map<ChessPosition, ChessPiece *> &board,
                    const ChessPosition start,
