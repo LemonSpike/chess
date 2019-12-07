@@ -1,8 +1,8 @@
 # include "ChessPiece.h"
 
 bool ChessPiece::canMakeMove(std::map<ChessPosition, ChessPiece *> &board,
-                             ChessPosition start,
-                             ChessPosition end) {
+                             const ChessPosition start,
+                             const ChessPosition end) {
     // Check for friendly fire.
   if ((board[end] -> color) == color) {
     std::cout << this << " cannot move to " << end.pos << "!";
