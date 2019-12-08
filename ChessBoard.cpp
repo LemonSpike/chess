@@ -38,11 +38,34 @@ void ChessBoard::submitMove(std::string positionOne, std::string positionTwo) {
   if (!(board[pos_one] -> canMakeMove(board, pos_one, pos_two)))
     return;
 
-  // TODO: Check for discovered check.
-
+  ChessPiece *startPiece = board[pos_one];
+  ChessPiece *endPiece = board[pos_two];
   board[pos_one] -> makeMove(board, pos_one, pos_two);
+
+  // Check for discovered check.
+  if (isInCheck(currentPlayer)) {
+    // Undo move.
+    board[pos_one] = startPiece;
+    board[pos_two] = endPiece;
+    std::cout << ((currentPlayer == white) ? "White's " : "Black's ");
+    std::cout << *startPiece << " cannot move to " << pos_two.pos << "!";
+    std::cout << std::endl;
+  } else {
+    board[pos_one] -> printMove(startPiece, endPiece, pos_one, pos_two);
+  }
+
+  if (endPiece != nullptr)
+    delete endPiece;
+
   switchPlayer();
 
+  if (isInCheckMate(currentPlayer)) {
+    std::cout << ((currentPlayer == white) ? "White " : "Black ");
+    std::cout << "is in checkmate" << std::endl;
+  } else if (isInCheck(currentPlayer)) {
+    std::cout << ((currentPlayer == white) ? "White " : "Black ");
+    std::cout << "is in check" << std::endl;
+  }
 }
 
 void ChessBoard::removePieces() {
@@ -100,28 +123,103 @@ void ChessBoard::resetBoard() {
 }
 
 bool ChessBoard::isInCheck(PieceColor player) {
-  ChessPosition kingPosition = findKing(player);
-  std::map<ChessPosition, ChessPiece *>::iterator iter = board.begin();
-  while (iter != board.end()) {
-    ChessPiece *piece = iter -> second;
-    if (piece and (piece -> color != player) and
-        piece -> canMakeMove(board, iter -> first, kingPosition)) {
-      return true;
-    }
-    iter++;
-  }
-  return false;
+  ChessPosition kingPosition = findKing(board, player);
+  return !findThreats(board, kingPosition).empty();
 }
 
 bool ChessBoard::isInCheckMate(PieceColor player) {
 
-}
+  if (!isInCheck(player))
+    return false;
 
-ChessPosition ChessBoard::findKing(PieceColor player) {
+  // Iterate across all pieces to check if they can save the king.
   std::map<ChessPosition, ChessPiece *>::iterator iter = board.begin();
   while (iter != board.end()) {
-    if ((iter -> second -> getPieceName() == "King") and
-        (iter -> second -> color == player)) {
+
+    // Check if piece exists at current position.
+    if (!(iter -> second)) {
+      iter++;
+      continue;
+    }
+
+    ChessPosition current = iter -> first;
+
+    // Check color of piece.
+    if (iter -> second -> color != player) {
+      iter++;
+      continue;
+    }
+
+    // Check if threats can be neutralised by moving current piece.
+    if (!evaluateThreats(board, current, player))
+      return false;
+
+    iter++;
+  }
+  return true;
+}
+
+bool ChessBoard::evaluateThreats(std::map<ChessPosition,
+                                 ChessPiece *> boardCopy,
+                                 ChessPosition current,
+                                 PieceColor player) {
+
+  ChessPiece *mover = boardCopy[current];
+  mover -> getAllMoves(boardCopy, current);
+  std::vector<ChessPosition> moves = mover -> allMoves;
+  ChessPiece *captured = nullptr;
+
+  for (unsigned int i = 0; i < moves.size(); ++i) {
+    // Make move.
+    if (boardCopy.find(moves[i]) != boardCopy.end())
+      captured = boardCopy[moves[i]];
+    boardCopy[moves[i]] = boardCopy[current];
+    boardCopy.erase(current);
+
+    // Find all threats to current players' King.
+    std::vector<ChessPosition> threats = findThreats(boardCopy,
+                                                     findKing(boardCopy,
+                                                              player));
+
+    // Redact move.
+    boardCopy[current] = mover;
+    if (captured)
+      boardCopy[moves[i]] = captured;
+    else
+      boardCopy.erase(moves[i]);
+    captured = nullptr;
+
+    // If threats can be neutralised, return false.
+    if (threats.empty())
+      return false;
+  }
+  return true;
+}
+
+std::vector<ChessPosition> ChessBoard::findThreats(std::map<ChessPosition,
+                                                   ChessPiece *> boardCopy,
+                                                   ChessPosition kingPosition) {
+
+  // Iterate across all pieces to check if they can attack the king.
+  std::map<ChessPosition, ChessPiece *>::iterator iter = boardCopy.begin();
+  std::vector<ChessPosition> threats;
+  while (iter != boardCopy.end()) {
+    ChessPiece *piece = iter -> second;
+    if (piece and (piece -> color != currentPlayer) and
+        piece -> isSquareReachable(boardCopy, iter -> first, kingPosition))
+          threats.push_back(iter -> first);
+    iter++;
+  }
+  return threats;
+}
+
+ChessPosition ChessBoard::findKing(std::map<ChessPosition,
+                                   ChessPiece *> boardCopy,
+                                   PieceColor player) {
+  std::map<ChessPosition, ChessPiece *>::iterator iter = boardCopy.begin();
+  while (iter != boardCopy.end()) {
+    if ((iter -> second) and (iter -> second -> getPieceName() == "King")
+        and (iter -> second -> color == player)) {
       break;
     }
     iter++;

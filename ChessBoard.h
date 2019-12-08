@@ -19,6 +19,14 @@ class ChessBoard {
   PieceColor currentPlayer;
   void switchPlayer();
   void removePieces();
+  std::vector<ChessPosition> findThreats(std::map<ChessPosition,
+                                         ChessPiece *> boardCopy,
+                                         ChessPosition kingPosition);
+  bool evaluateThreats(std::map<ChessPosition, ChessPiece *> boardCopy,
+                       ChessPosition current,
+                       PieceColor player);
+  ChessPosition findKing(std::map<ChessPosition, ChessPiece *> boardCopy,
+                         PieceColor player);
 
 public:
 
@@ -28,7 +36,6 @@ public:
   void resetBoard();
   void submitMove(std::string positionOne, std::string positionTwo);
   bool isInCheck(PieceColor player);
-  ChessPosition findKing(PieceColor player);
   bool isInCheckMate(PieceColor player);
 };
 

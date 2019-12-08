@@ -37,8 +37,14 @@ public:
                          const ChessPosition start,
                          const ChessPosition end);
 
-  virtual void getAllMoves(std::map<ChessPosition, ChessPiece *> &board,
+  virtual void getAllMoves(std::map<ChessPosition,
+                           ChessPiece *> &board,
                            const ChessPosition start) = 0;
+
+  void printMove(ChessPiece *startPiece,
+                 ChessPiece *endPiece,
+                 const ChessPosition start,
+                 const ChessPosition end);
 
   void makeMove(std::map<ChessPosition, ChessPiece *> &board,
                 const ChessPosition start,

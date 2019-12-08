@@ -21,18 +21,21 @@ bool ChessPiece::canMakeMove(std::map<ChessPosition, ChessPiece *> &board,
 void ChessPiece::makeMove(std::map<ChessPosition, ChessPiece *> &board,
                           const ChessPosition start,
                           const ChessPosition end) {
-
   ChessPiece *startPiece = board[start];
-  ChessPiece *endPiece = board[end];
 
   board[end] = startPiece;
   board[start] = nullptr;
+}
 
-  std::cout << *this << " moves from " << start.pos << " to ";
+void ChessPiece::printMove(ChessPiece *startPiece,
+                           ChessPiece *endPiece,
+                           const ChessPosition start,
+                           const ChessPosition end) {
+
+  std::cout << *startPiece << " moves from " << start.pos << " to ";
   std::cout << end.pos;
   if (endPiece != nullptr) {
     std::cout << " taking " << *endPiece;
-    delete endPiece;
   }
   std::cout << std::endl;
 }
