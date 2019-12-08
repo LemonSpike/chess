@@ -18,6 +18,10 @@ void Pawn::getAllMoves(std::map<ChessPosition, ChessPiece *> &board,
 
   if (!board[move])
     moves.push_back(move);
+  else {
+    allMoves = moves;
+    return;
+  }
 
   // Check double step.
   move = start;
