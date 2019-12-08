@@ -19,6 +19,9 @@ class ChessBoard {
   // Data structure to store pieces and their positions on a Chess board.
   std::map<ChessPosition, ChessPiece *> board;
 
+  // Tracks whether the game is over.
+  bool gameOver;
+
   // This variable tracks who the current player is.
   PieceColor currentPlayer;
 
@@ -49,7 +52,7 @@ public:
 
   // This function initialises the board with the initial piece positions and
   // first player set to white.
-  ChessBoard(): currentPlayer(white) { resetBoard(); };
+  ChessBoard(): gameOver(false), currentPlayer(white) { resetBoard(); };
 
   // This function removes all pieces from the board and deallocates memory.
   ~ChessBoard() { removePieces(); };
@@ -65,6 +68,9 @@ public:
 
   // This function returns true if player is under checkmate.
   bool isInCheckMate(PieceColor player);
+
+  // This function returns true if player has no available moves (stalemate).
+  bool isStaleMate(PieceColor player);
 };
 
 #endif

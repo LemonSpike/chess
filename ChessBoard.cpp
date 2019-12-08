@@ -8,6 +8,14 @@ void ChessBoard::switchPlayer() {
 }
 
 void ChessBoard::submitMove(std::string positionOne, std::string positionTwo) {
+
+  // Check if the game is already over.
+  if (gameOver) {
+    std::cout << "The game is already over, so no more moves can be made!";
+    std::cout << std::endl;
+    return;
+  }
+
   // Check positions are valid.
   ChessPosition pos_one(positionOne);
   if (!pos_one.isPositionValid()) {
@@ -62,9 +70,14 @@ void ChessBoard::submitMove(std::string positionOne, std::string positionTwo) {
   if (isInCheckMate(currentPlayer)) {
     std::cout << ((currentPlayer == white) ? "White " : "Black ");
     std::cout << "is in checkmate" << std::endl;
+    gameOver = true;
   } else if (isInCheck(currentPlayer)) {
     std::cout << ((currentPlayer == white) ? "White " : "Black ");
     std::cout << "is in check" << std::endl;
+  } else if (isStaleMate(currentPlayer)) {
+    std::cout << ((currentPlayer == white) ? "White " : "Black ");
+    std::cout << "is in stalemate!" << std::endl;
+    gameOver = true;
   }
 }
 
@@ -120,6 +133,7 @@ void ChessBoard::resetBoard() {
     board[ChessPosition(coord)] = new Pawn(black);
 
   currentPlayer = white;
+  gameOver = false;
 }
 
 bool ChessBoard::isInCheck(PieceColor player) {
@@ -128,11 +142,12 @@ bool ChessBoard::isInCheck(PieceColor player) {
 }
 
 bool ChessBoard::isInCheckMate(PieceColor player) {
+  return isInCheck(player) and isStaleMate(player);
+}
 
-  if (!isInCheck(player))
-    return false;
+bool ChessBoard::isStaleMate(PieceColor player) {
 
-  // Iterate across all pieces to check if they can save the king.
+  // Iterate across all player pieces to check if they can move.
   std::map<ChessPosition, ChessPiece *>::iterator iter = board.begin();
   while (iter != board.end()) {
 
@@ -142,16 +157,14 @@ bool ChessBoard::isInCheckMate(PieceColor player) {
       continue;
     }
 
-    ChessPosition current = iter -> first;
-
-    // Check color of piece.
+    // Check if piece belongs to current player.
     if (iter -> second -> color != player) {
       iter++;
       continue;
     }
 
-    // Check if threats can be neutralised by moving current piece.
-    if (!evaluateThreats(board, current, player))
+    // Check if moves without getting check can be made.
+    if (!evaluateThreats(board, iter -> first, player))
       return false;
 
     iter++;
