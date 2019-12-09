@@ -12,7 +12,7 @@ void ChessBoard::submitMove(std::string positionOne, std::string positionTwo) {
   // Check if the game is already over.
   if (gameOver) {
     std::cout << "The game is already over, so no more moves can be made!";
-    std::cout << std::endl;
+    std::cout << std::endl << std::endl;
     return;
   }
 
@@ -134,6 +134,8 @@ void ChessBoard::resetBoard() {
 
   currentPlayer = white;
   gameOver = false;
+
+  std::cout << "A new chess game is started!" << std::endl;
 }
 
 bool ChessBoard::isInCheck(PieceColor player) {

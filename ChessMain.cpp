@@ -76,6 +76,7 @@ int main() {
   std::cout << "Stalemate Example\n";
   std::cout << "=========================\n\n";
   cb.resetBoard();
+  std::cout << '\n';
 
   cb.submitMove("E2", "E3");
   cb.submitMove("A7", "A5");
@@ -120,6 +121,7 @@ int main() {
   std::cout << "Checkmate Example 1\n";
   std::cout << "=========================\n\n";
   cb.resetBoard();
+  std::cout << '\n';
 
   cb.submitMove("F2", "F3");
   cb.submitMove("E7", "E5");
@@ -133,6 +135,7 @@ int main() {
   std::cout << "Checkmate Example 2\n";
   std::cout << "=========================\n\n";
   cb.resetBoard();
+  std::cout << '\n';
 
   cb.submitMove("H2", "H4");
   cb.submitMove("E7", "E5");
@@ -174,6 +177,7 @@ int main() {
   std::cout << "Checkmate Example 3\n";
   std::cout << "=========================\n\n";
   cb.resetBoard();
+  std::cout << '\n';
 
   cb.submitMove("e2", "e4");
   cb.submitMove("e7", "e5");
