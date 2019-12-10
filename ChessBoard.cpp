@@ -38,7 +38,7 @@ void ChessBoard::submitMove(std::string positionOne, std::string positionTwo) {
   // Block move if piece color is incorrect.
   if (board[pos_one] -> color != currentPlayer) {
     std::cout << "It is not " << ((board[pos_one] -> color == white) ?
-				  "White's " : "Black's ");
+                                  "White's " : "Black's ");
     std::cout << "turn to move!" << std::endl;
     return;
   }

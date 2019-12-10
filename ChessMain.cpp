@@ -303,7 +303,5 @@ int main() {
   cb.submitMove("D8", "H4");
   std::cout << '\n';
 
-  
   return 0;
-
 }
