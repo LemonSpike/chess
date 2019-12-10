@@ -196,5 +196,114 @@ int main() {
 
   // Test invalid move after game over.
   cb.submitMove("e7", "e6");
+
+  std::cout << "=========================\n";
+  std::cout << "Keres vs Arlamowski\n";
+  std::cout << "=========================\n\n";
+  cb.resetBoard();
+  std::cout << '\n';
+
+  cb.submitMove("E2","E4");
+  cb.submitMove("C7","C6");
+  std::cout << '\n';
+
+  cb.submitMove("B1","C3");
+  cb.submitMove("D7","D5");
+  std::cout << '\n';
+
+  cb.submitMove("G1","F3");
+  cb.submitMove("D5","E4");
+  std::cout << '\n';
+
+  cb.submitMove("C3","E4");
+  cb.submitMove("G8","F6");
+  std::cout << '\n';
+
+  cb.submitMove("D1","E2");
+  cb.submitMove("B8","D7");
+  std::cout << '\n';
+
+  cb.submitMove("E4","D6");
+  std::cout << "\n";
+
+  std::cout << "=========================\n";
+  std::cout << "Checkmate 4\n";
+  std::cout << "=========================\n\n";
+  cb.resetBoard();
+  std::cout << '\n';
+
+  cb.submitMove("E2","E4");
+  cb.submitMove("E7","E5");
+  std::cout << '\n';
+
+  cb.submitMove("F1","C4");
+  cb.submitMove("F8","C5");
+  cb.submitMove("D1","H5");
+  std::cout << '\n';
+
+  cb.submitMove("G8","F6");
+  cb.submitMove("E2","E4");
+  std::cout << '\n';
+
+  cb.submitMove("H5","F7");
+  std::cout << '\n';
+
+  std::cout << "=========================\n";
+  std::cout << "Checkmate 5\n";
+  std::cout << "=========================\n\n";
+  cb.resetBoard();
+  std::cout << '\n';
+
+  cb.submitMove("E2", "E4");
+  cb.submitMove("E7", "E5");
+  std::cout << '\n';
+
+  cb.submitMove("G1", "F3");
+  cb.submitMove("B8", "C6");
+  std::cout << '\n';
+
+  cb.submitMove("B1", "C3");
+  cb.submitMove("G8", "F6");
+  std::cout << '\n';
+
+  cb.submitMove("F1", "C4");
+  cb.submitMove("D7", "D6");
+  std::cout << '\n';
+
+  cb.submitMove("F3", "G5");
+  cb.submitMove("C8", "G4");
+  std::cout << '\n';
+
+  cb.submitMove("C4", "F7");
+  cb.submitMove("E8", "E7");
+  std::cout << '\n';
+
+  cb.submitMove("C3", "D5");
+  cb.submitMove("F6", "D5");
+  std::cout << '\n';
+
+  cb.submitMove("D1", "G4");
+  cb.submitMove("D5", "F6");
+  std::cout << '\n';
+
+  cb.submitMove("G4", "E6");
+  std::cout << '\n';
+
+  std::cout << "=========================\n";
+  std::cout << "Checkmate 6\n";
+  std::cout << "=========================\n\n";
+  cb.resetBoard();
+  std::cout << '\n';
+
+  cb.submitMove("F2", "F3");
+  cb.submitMove("E7", "E5");
+  std::cout << '\n';
+
+  cb.submitMove("G2", "G4");
+  cb.submitMove("D8", "H4");
+  std::cout << '\n';
+
+  
   return 0;
+
 }
